@@ -1,4 +1,5 @@
 # OpenShift example for StateFulSets
+Tested mit OpenShift and Minishift v3.5.5.31.
 
 # Prerequisits
 Because the Zookeeper image needs root, so OpenShift admin has to set scc...
