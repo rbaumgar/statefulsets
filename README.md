@@ -29,12 +29,12 @@ Add service account to security context constraint anyuid(as admin!)
 
 # Creating a ZooKeeper Ensemble
 Creating an ensemble is as simple as using oc create to generate the objects stored in the manifest.
-
-    $ oc create -f zookeeper.yaml
-    service "zk-hs" created
-    service "zk-cs" created
-    statefulset "zk" created
-
+```
+$ oc create -f zookeeper.yaml
+service "zk-hs" created
+service "zk-cs" created
+statefulset "zk" created
+```
 When you create the manifest, the StatefulSet controller creates each Pod, with respect to its ordinal, and waits for each to be Running and Ready prior to creating its successor.
 
     $ oc get pod -w
