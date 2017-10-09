@@ -155,6 +155,10 @@ You can take the ensemble down by deleting the zk StatefulSet.
     $ oc delete svc zk-cs zk-hs
     service "zk-cs" deleted
     service "zk-hs" deleted
+    $ oc delete pvc --all
+    persistentvolumeclaim "datadir-zk-0" deleted
+    persistentvolumeclaim "datadir-zk-1" deleted
+    persistentvolumeclaim "datadir-zk-2" deleted
 
 The cascading delete destroys each Pod in the StatefulSet, with respect to the reverse order of the Pods’ ordinals, and it waits for each to terminate completely before terminating its predecessor.
 
