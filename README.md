@@ -1,9 +1,23 @@
 # OpenShift example for StateFulSets
 
+# Prerequisits
+Because the Zookeeper image needs root, so OpenShift admin has to set scc...
+e.g. projects = statef
+
+    $ oc project statef
+
+Create a new service account
+
+    $ oc create serviceaccount useroot 
+
+Add service account to security context constraint anyuid(as admin!)
+
+    $ oc adm policy add-scc-to-user anyuid -z useroot -n statef
+
 # Creating a ZooKeeper Ensemble
 Creating an ensemble is as simple as using oc create to generate the objects stored in the manifest.
 
-    $ oc create -f http://k8s.io/docs/tutorials/stateful-application/zookeeper.yaml
+    $ oc create -f zookeeper.yaml
     service "zk-hs" created
     service "zk-cs" created
     statefulset "zk" created
@@ -75,7 +89,7 @@ StatefulSet lets you deploy ZooKeeper in a consistent and reproducible way. You 
 # Verify Zookeeper Ensemble
 The simplest way to verify that the ensemble works is to write a value to one server and to read it from another. You can use the “zkCli.sh” script that ships with the ZooKeeper distribution, to create a ZNode containing some data.
 
-    oc exec zk-0 zkCli.sh create /hello world
+    $ oc exec zk-0 zkCli.sh create /hello world
     Connecting to localhost:2181
     ...
     
@@ -96,6 +110,29 @@ You can use the same script to read the data from another server in the ensemble
     world
     ...
     
+# Test Failover
+Once you have all 3 nodes running, you can test failover by killing the leader.
+
+    $ oc delete pod zk-2
+
+    $ oc run --attach bbox --image=busybox --restart=Never -- sh -c 'while true; do for i in 0 1 2; do echo zk-$i $(echo stats | nc zk-$i.zk-hs 2181 | grep Mode); sleep 10; done; done'
+    If you don't see a command prompt, try pressing enter.
+    zk-0 Mode: follower
+    zk-1 Mode: follower
+    zk-2 Mode: leader
+    ...
+    zk-0 Mode: follower
+    zk-1 Mode: leader
+    nc: bad address 'zk-2.zk-hs'
+    zk-2
+    zk-0 Mode: follower
+    zk-1 Mode: leader
+    nc: bad address 'zk-2.zk-hs'
+    zk-2
+    zk-0 Mode: follower
+    zk-1 Mode: leader
+    zk-2 Mode: follower
+    ...
 
 # Delete Zookeeper Ensemble
 You can take the ensemble down by deleting the zk StatefulSet.
