@@ -80,9 +80,9 @@ The combination of a unique Pod ordinal and a unique network address allows you 
     maxSessionTimeout=40000
     autopurge.snapRetainCount=3
     autopurge.purgeInteval=12
-    server.1=zk-0.zk-hs.statef.svc.cluster.local:2888:3888
-    server.2=zk-1.zk-hs.statef.svc.cluster.local:2888:3888
-    server.3=zk-2.zk-hs.statef.svc.cluster.local:2888:3888
+    **server.1=zk-0.zk-hs.statef.svc.cluster.local:2888:3888**
+    **server.2=zk-1.zk-hs.statef.svc.cluster.local:2888:3888**
+    **server.3=zk-2.zk-hs.statef.svc.cluster.local:2888:3888**
 
 StatefulSet lets you deploy ZooKeeper in a consistent and reproducible way. You won’t create more than one server with the same id, the servers can find each other via a stable network addresses, and they can perform leader election and replicate writes because the ensemble has consistent membership.
 
@@ -140,9 +140,11 @@ You can take the ensemble down by deleting the zk StatefulSet.
 
     $ oc delete statefulset zk
     statefulset "zk" deleted
+    $ oc delete svc zk-cs zk-hs
+    service "zk-cs" deleted
+    service "zk-hs" deleted
 
 The cascading delete destroys each Pod in the StatefulSet, with respect to the reverse order of the Pods’ ordinals, and it waits for each to terminate completely before terminating its predecessor.
-
 
     $ oc get pods -w -l app=zk
     NAME      READY     STATUS    RESTARTS   AGE
