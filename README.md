@@ -1,6 +1,18 @@
 # OpenShift example for StateFulSets
 Tested mit OpenShift and Minishift v3.5.5.31.
 
+This new controller allows for the deployment of application types that require changes to their configuration or deployment count (instances) to be done in a specific and ordered manner.
+
+Supported:
+
+- Declaration of the Ordinal Index.
+- Stable network ID nomenclature.
+- Controlled or manual handling of PVs.
+- Sequence control at deployment time.
+- Ordered control during scale up or scale down, based on instance status.
+
+See https://docs.openshift.com/container-platform/3.5/release_notes/ocp_3_5_release_notes.html#ocp-35-statefulsets
+
 # Prerequisits
 Because the Zookeeper image needs root, so OpenShift admin has to set scc...
 e.g. projects = statef
