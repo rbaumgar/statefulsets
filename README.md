@@ -29,7 +29,7 @@ Add service account to security context constraint anyuid(as admin!)
 
 # Creating a ZooKeeper Ensemble
 Creating an ensemble is as simple as using oc create to generate the objects stored in the manifest.
-```
+```console
 $ oc create -f zookeeper.yaml
 service "zk-hs" created
 service "zk-cs" created
