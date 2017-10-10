@@ -128,7 +128,7 @@ Once you have all 3 nodes running, you can test failover by killing the leader.
 ```console
 $ oc delete pod zk-2
 
-$ oc run --attach bbox --image=busybox --restart=Never -- sh -c 'while true; do for i in 0 1 2; do echo zk-$i $(echo stats | nc zk-$i.zk-hs 2181 | grep Mode); sleep 10; done; done'
+$ oc run --attach bbox --image=busybox --restart=Never -- sh -c 'while true; do for i in 0 1 2; do echo zk-$i $(echo stats | nc zk-$i.zk-hs 2181 | grep Mode); sleep 1; done; done'
 If you don't see a command prompt, try pressing enter.
 zk-0 Mode: follower
 zk-1 Mode: follower
