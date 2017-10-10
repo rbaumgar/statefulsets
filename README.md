@@ -17,11 +17,11 @@ See https://docs.openshift.com/container-platform/3.5/release_notes/ocp_3_5_rele
 Because the Zookeeper image needs root, so OpenShift admin has to set scc...
 e.g. projects = statef
 ```
-$ oc project statef
+$ oc new-project statef
 ```
 Create a new service account
 ```
-$ oc create serviceaccount useroot 
+$ oc create serviceaccount useroot
 ```
 Add service account to security context constraint anyuid(as admin!)
 ```
@@ -30,7 +30,7 @@ $ oc adm policy add-scc-to-user anyuid -z useroot -n statef
 # Creating a ZooKeeper Ensemble
 Creating an ensemble is as simple as using oc create to generate the objects stored in the manifest.
 ```console
-$ oc create -f zookeeper.yaml
+$ oc create -f https://raw.githubusercontent.com/rbaumgar/statefulsets/master/zookeeper.yaml
 service "zk-hs" created
 service "zk-cs" created
 statefulset "zk" created
